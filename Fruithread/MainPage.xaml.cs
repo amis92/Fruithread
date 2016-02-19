@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Fruithread.ViewModels;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -25,6 +26,11 @@ namespace Fruithread
         public MainPage()
         {
             this.InitializeComponent();
+
+            DataContext = new MainViewModel
+            {
+                CoreDispatcher = Dispatcher
+            };
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
         }

@@ -5,10 +5,50 @@
     xmlns:local="using:Fruithread"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="using:Fruithread.ViewModels"
+    xmlns:helpers="using:Fruithread.Helpers"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DataContext="{d:DesignInstance viewModels:MainViewModel}">
 
-    <Grid>
+    <Page.Resources>
+        <helpers:MultiplierConverter x:Key="MultiplierConverter" />
+        <DataTemplate x:Key="AppleTemplate">
+            <StackPanel Orientation="Horizontal" Background="Green" Margin="0 2 0 2">
+                <TextBlock Text="Jabłko (" Style="{StaticResource ListViewItemTextBlockStyle}" Padding="5,0,0,0" />
+                <TextBlock Text="{Binding Counter}" Style="{StaticResource ListViewItemTextBlockStyle}" />
+                <TextBlock Text=")" Style="{StaticResource ListViewItemTextBlockStyle}" Padding="0,0,5,0" />
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="OrangeTemplate">
+            <StackPanel Orientation="Horizontal" Background="Orange" Margin="0 2 0 2"
+                        >
+                <TextBlock Text="Pomarańcza (" Style="{StaticResource ListViewItemTextBlockStyle}" Padding="5,0,0,0" />
+                <TextBlock
+                    Text="{Binding Counter, Converter={StaticResource MultiplierConverter}, ConverterParameter=11}" Style="{StaticResource ListViewItemTextBlockStyle}" />
+                <TextBlock Text=")" Style="{StaticResource ListViewItemTextBlockStyle}" Padding="0,0,5,0" />
+            </StackPanel>
+        </DataTemplate>
+        <helpers:FruitTemplateSelector x:Key="FruitTemplateSelector"
+                                       AppleTemplate="{StaticResource AppleTemplate}"
+                                       OrangeTemplate="{StaticResource OrangeTemplate}" />
+    </Page.Resources>
 
+    <Grid Margin="10 5 10 5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListView ItemsSource="{Binding Fruits}" ItemTemplateSelector="{StaticResource FruitTemplateSelector}" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding StartCommand}" Content="START" HorizontalAlignment="Center" />
+            <Button Command="{Binding StopCommand}" Content="STOP" HorizontalAlignment="Center" Grid.Column="1" />
+        </Grid>
     </Grid>
 </Page>
